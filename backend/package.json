@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "server.js",
+    "start": "node server.js",
     "build:docker": "docker build --platform linux/amd64 -t ottawatamilsangam/backend:test . && docker push ottawatamilsangam/backend:test"
   },
   "author": "",
