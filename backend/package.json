@@ -2,9 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "index.js"
+    "start": "server.js",
+    "build:docker": "docker build --platform linux/amd64 -t ottawatamilsangam/backend:test . && docker push ottawatamilsangam/backend:test"
   },
   "author": "",
   "license": "ISC",
