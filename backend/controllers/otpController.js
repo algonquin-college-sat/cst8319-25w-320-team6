@@ -54,7 +54,8 @@ exports.sendOtp = async (req, res) => {
     const sendOtpAndRespond = async () => {
       const otp = generateNumericOTP(6);
       await Otp.create({ email, otp });
-      await sendOTPByEmail(email, otp);
+      console.log(otp);
+      // await sendOTPByEmail(email, otp);
 
       return res.status(200).json({
         status: "success",
@@ -83,6 +84,7 @@ exports.sendOtp = async (req, res) => {
       const query = User.findOne({ email });
       query._activeFilterDisabled = true;
       existingUser = await query.lean();
+      console.log(existingUser);
 
       if (existingUser && existingUser.isActive && existingUser.password) {
         console.log("Register page2");
@@ -92,7 +94,7 @@ exports.sendOtp = async (req, res) => {
           message: "User already exists. Please login with your credential.",
           data: existingUser,
         });
-      } else if (existingUser && existingUser.isPaid === false) {
+      } else if (existingUser && !existingUser.isPaid) {
         console.log("Register page3");
 
         return res.status(200).json({

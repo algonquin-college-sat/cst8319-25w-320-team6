@@ -38,6 +38,7 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<Register />} />
             <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+
             <Route path="/member-manage" element={<MemberManagePage />} />
             <Route path="/volunteer-manage" element={<VolunteerManagePage />} />
             <Route path="/add-news" element={<AddPostForm />} />
