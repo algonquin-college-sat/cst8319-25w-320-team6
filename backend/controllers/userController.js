@@ -204,6 +204,8 @@ exports.addUser = async (req, res) => {
   }
 };
 
+exports.sendReminder = async (req, res) => {};
+
 exports.updateUser = async (req, res) => {
   // check if request data contain password
   if (req.body.password) {

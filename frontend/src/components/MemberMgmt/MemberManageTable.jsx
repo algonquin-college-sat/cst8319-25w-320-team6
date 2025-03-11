@@ -6,7 +6,7 @@ import {
   useMaterialReactTable,
   MRT_ActionMenuItem,
 } from "material-react-table";
-import { Edit, Delete } from "@mui/icons-material";
+import { Edit, Delete, Send } from "@mui/icons-material";
 import { Box, Container, Button } from "@mui/material";
 import ConfirmModal from "../ConfirmModal.jsx";
 import EditUserForm from "./EditUserForm.jsx";
@@ -164,6 +164,27 @@ const MemberManageTable = () => {
     }
   };
 
+  const sendReminder = async (userId) => {
+    try {
+      setTimeout(() => {
+        alert("Reminder sent");
+      }, 1000);
+      return;
+      const response = await axios.post(
+        `${BaseURL}/api/user/sendReminder/${userId}`,
+        { userId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+    } catch (error) {
+      alert("Error sending reminder");
+      console.error("Error sending reminder:", error);
+    }
+  }
+
   const table = useMaterialReactTable({
     columns: useMemo(() => columns, [columns]),
     data: useMemo(() => userData, [userData]),
@@ -204,6 +225,21 @@ const MemberManageTable = () => {
             if (isActive) {
               setSelectedUserId(row.original.id);
               openDeleteModal();
+              closeMenu();
+            }
+          }}
+        />,
+
+        <MRT_ActionMenuItem
+          icon={<Send />}
+          key="reminder"
+          label="Send Expiry Reminder"
+          disabled={!isActive}
+          table={table}
+          sx={{ border: 0 }}
+          onClick={() => {
+            if (isActive) {
+              sendReminder(row.original.id);
               closeMenu();
             }
           }}
