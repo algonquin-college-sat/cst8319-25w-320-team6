@@ -173,7 +173,7 @@ exports.getUsersByRoleId = async (req, res) => {
   }
 };
 
-exports.createUser = async (req, res) => {
+exports.addUser = async (req, res) => {
   const { email, firstName, lastName, roles } = req.body;
   if (!email || !firstName || !lastName || !roles) {
     return res.status(400).json({
@@ -196,6 +196,7 @@ exports.createUser = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Error creating user:", error);
     return res.status(500).json({
       status: "error",
       message: "Failed to create user.",

@@ -21,42 +21,42 @@ const MemberManageTable = () => {
   const [roleOptions, setRoleOptions] = useState([]);
   const apiUrl = `${BaseURL}/api/user/getAllUsers`;
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Add authorization header
+        },
+      });
+      const data = response.data;
+
+      const fetchedData = data.data.users.map((user) => ({
+        id: user._id,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        isActive: user.isActive ? "Active" : "Inactive",
+        roles: user.roles.join(", "),
+        created: new Date(user.created).toISOString().split("T")[0],
+      }));
+
+      const columns = [
+        { accessorKey: "id", header: "User ID" },
+        { accessorKey: "email", header: "Email" },
+        { accessorKey: "firstName", header: "First Name" },
+        { accessorKey: "lastName", header: "Last Name" },
+        { accessorKey: "roles", header: "Roles" },
+        { accessorKey: "created", header: "Created", size: 50 },
+        { accessorKey: "isActive", header: "Active Status" },
+      ];
+      setColumns(columns);
+      setUserData(fetchedData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add authorization header
-          },
-        });
-        const data = response.data;
-
-        const fetchedData = data.data.users.map((user) => ({
-          id: user._id,
-          email: user.email,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          isActive: user.isActive ? "Active" : "Inactive",
-          roles: user.roles.join(", "),
-          created: new Date(user.created).toISOString().split("T")[0],
-        }));
-
-        const columns = [
-          { accessorKey: "id", header: "User ID" },
-          { accessorKey: "email", header: "Email" },
-          { accessorKey: "firstName", header: "First Name" },
-          { accessorKey: "lastName", header: "Last Name" },
-          { accessorKey: "roles", header: "Roles" },
-          { accessorKey: "created", header: "Created", size: 50 },
-          { accessorKey: "isActive", header: "Active Status" },
-        ];
-        setColumns(columns);
-        setUserData(fetchedData);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
     fetchData();
   }, [apiUrl]);
 
@@ -151,11 +151,16 @@ const MemberManageTable = () => {
 
   const handleAddUser = async (user) => {
     try {
-      const response = await axios.post(`${BaseURL}/api/user/addUser`, user);
+      const response = await axios.post(`${BaseURL}/api/user/addUser`, user, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
     } catch (error) {
       console.error("Error adding user:", error);
     } finally {
       setShowAddUserModal(false);
+      fetchData();
     }
   };
 
@@ -271,7 +276,7 @@ const MemberManageTable = () => {
           }}
           isNew={true}
           roleOptions={roleOptions}
-          onUpdateUser={() => setShowAddUserModal(false)}
+          onUpdateUser={handleAddUser}
           onClose={() => setShowAddUserModal(false)}
         />
       )}
