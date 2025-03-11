@@ -25,7 +25,7 @@ const MenuProps = {
   },
 };
 
-const EditUserForm = ({ user, roleOptions, onUpdateUser, onClose }) => {
+const EditUserForm = ({ user, roleOptions, onUpdateUser, onClose, isNew }) => {
   const [editedUser, setEditedUser] = useState(user);
   const [roleName, setRoleName] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -38,7 +38,7 @@ const EditUserForm = ({ user, roleOptions, onUpdateUser, onClose }) => {
         user.roles.map((roleId) => {
           const role = roleOptions.find((role) => role._id === roleId);
           return role ? role.name : roleId;
-        })
+        }),
       );
     } else {
       setRoleName([]);
@@ -73,7 +73,7 @@ const EditUserForm = ({ user, roleOptions, onUpdateUser, onClose }) => {
 
   return (
     <Dialog open={true} onClose={onClose} aria-labelledby="edit-user-dialog">
-      <DialogTitle>Edit User </DialogTitle>
+      <DialogTitle>{isNew ? "Create" : "Edit"} User </DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           {errorMessage && (
@@ -82,13 +82,38 @@ const EditUserForm = ({ user, roleOptions, onUpdateUser, onClose }) => {
             </Grid>
           )}
           <Grid item xs={12}>
-            <TextField label="Email" value={editedUser.email} fullWidth disabled sx={{ mt: 1 }} />
+            <TextField
+              label="Email"
+              value={editedUser.email}
+              onChange={(e) =>
+                setEditedUser((u) => ({ ...u, email: e.target.value }))
+              }
+              disabled={!isNew}
+              fullWidth
+              sx={{ mt: 1 }}
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField label="First Name" value={editedUser.firstName} fullWidth disabled />
+            <TextField
+              label="First Name"
+              value={editedUser.firstName}
+              onChange={(e) =>
+                setEditedUser((u) => ({ ...u, firstName: e.target.value }))
+              }
+              disabled={!isNew}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField label="Last Name" value={editedUser.lastName} fullWidth disabled />
+            <TextField
+              label="Last Name"
+              value={editedUser.lastName}
+              onChange={(e) =>
+                setEditedUser((u) => ({ ...u, lastName: e.target.value }))
+              }
+              disabled={!isNew}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
@@ -112,22 +137,37 @@ const EditUserForm = ({ user, roleOptions, onUpdateUser, onClose }) => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <TextField label="Created" value={editedUser.created} fullWidth disabled />
+            <TextField
+              label="Created"
+              value={editedUser.created}
+              fullWidth
+              disabled
+            />
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions sx={{ display: "flex", justifyContent: "center", mb: 2, p: 0 }}>
+      <DialogActions
+        sx={{ display: "flex", justifyContent: "center", mb: 2, p: 0 }}
+      >
         <Button
           variant="contained"
-          sx={{ backgroundColor: "#e88a1d", color: "#ffffff", "&:hover": { backgroundColor: "#e88a1d" } }}
+          sx={{
+            backgroundColor: "#e88a1d",
+            color: "#ffffff",
+            "&:hover": { backgroundColor: "#e88a1d" },
+          }}
           onClick={handleUpdate}
         >
-          Update
+          {isNew ? "Create" : "Update"}
         </Button>
         <Button
           variant="contained"
           onClick={onClose}
-          sx={{ backgroundColor: "#e88a1d", color: "#ffffff", "&:hover": { backgroundColor: "#e88a1d" } }}
+          sx={{
+            backgroundColor: "#e88a1d",
+            color: "#ffffff",
+            "&:hover": { backgroundColor: "#e88a1d" },
+          }}
         >
           Cancel
         </Button>

@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import BaseURL from "../../config";
-import { MaterialReactTable, useMaterialReactTable, MRT_ActionMenuItem } from "material-react-table";
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  MRT_ActionMenuItem,
+} from "material-react-table";
 import { Edit, Delete } from "@mui/icons-material";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Button } from "@mui/material";
 import ConfirmModal from "../ConfirmModal.jsx";
 import EditUserForm from "./EditUserForm.jsx";
 
@@ -12,6 +16,7 @@ const MemberManageTable = () => {
   const [userData, setUserData] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [roleOptions, setRoleOptions] = useState([]);
   const apiUrl = `${BaseURL}/api/user/getAllUsers`;
@@ -105,7 +110,11 @@ const MemberManageTable = () => {
             .join(", "),
         };
 
-        setUserData((prevUserData) => prevUserData.map((user) => (user.id === editedUser.id ? updatedUserData : user)));
+        setUserData((prevUserData) =>
+          prevUserData.map((user) =>
+            user.id === editedUser.id ? updatedUserData : user,
+          ),
+        );
       } else {
         throw new Error("Failed to edit user");
       }
@@ -126,7 +135,9 @@ const MemberManageTable = () => {
       });
 
       if (response.status === 204) {
-        setUserData((prevUserData) => prevUserData.filter((user) => user.id !== selectedUserId));
+        setUserData((prevUserData) =>
+          prevUserData.filter((user) => user.id !== selectedUserId),
+        );
         window.location.reload();
       } else {
         throw new Error("Failed to delete user");
@@ -135,6 +146,16 @@ const MemberManageTable = () => {
       console.error("Error deleting user:", error);
     } finally {
       setShowDeleteModal(false);
+    }
+  };
+
+  const handleAddUser = async (user) => {
+    try {
+      const response = await axios.post(`${BaseURL}/api/user/addUser`, user);
+    } catch (error) {
+      console.error("Error adding user:", error);
+    } finally {
+      setShowAddUserModal(false);
     }
   };
 
@@ -196,6 +217,19 @@ const MemberManageTable = () => {
   return (
     <>
       <Container sx={{ padding: "20px" }}>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#e88a1d",
+            color: "#ffffff",
+            "&:hover": { backgroundColor: "#e88a1d" },
+            "margin-bottom": "20px",
+          }}
+          onClick={() => setShowAddUserModal(true)}
+        >
+          Add User
+        </Button>
+
         <Box sx={{ width: "100%", display: "table", tableLayout: "fixed" }}>
           <MaterialReactTable table={table} />
         </Box>
@@ -216,11 +250,29 @@ const MemberManageTable = () => {
           user={{
             ...userData.find((user) => user.id === selectedUserId),
             //split the roles string into an array before passing to ensure the form receives the roles in the array format
-            roles: userData.find((user) => user.id === selectedUserId).roles.split(", "),
+            roles: userData
+              .find((user) => user.id === selectedUserId)
+              .roles.split(", "),
           }}
           roleOptions={roleOptions}
           onUpdateUser={handleUpdateUser}
           onClose={handleEditUserModalClose}
+        />
+      )}
+
+      {showAddUserModal && (
+        <EditUserForm
+          user={{
+            email: "",
+            firstName: "",
+            lastName: "",
+            created: new Date().toISOString(),
+            roles: [],
+          }}
+          isNew={true}
+          roleOptions={roleOptions}
+          onUpdateUser={() => setShowAddUserModal(false)}
+          onClose={() => setShowAddUserModal(false)}
         />
       )}
     </>

@@ -173,6 +173,36 @@ exports.getUsersByRoleId = async (req, res) => {
   }
 };
 
+exports.createUser = async (req, res) => {
+  const { email, firstName, lastName, roles } = req.body;
+  if (!email || !firstName || !lastName || !roles) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Please provide email, first name, last name, and roles.",
+    });
+  }
+  try {
+    const user = await User.create({
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      roles,
+    });
+
+    return res.status(201).json({
+      status: "success",
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to create user.",
+    });
+  }
+};
+
 exports.updateUser = async (req, res) => {
   // check if request data contain password
   if (req.body.password) {

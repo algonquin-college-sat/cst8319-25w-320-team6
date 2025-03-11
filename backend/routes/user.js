@@ -29,6 +29,13 @@ router.patch(
   userController.updateUser
 );
 
+router.post(
+  "/addUser",
+  authController.protect,
+  authController.restrict("Administrator"),
+  userController.addUser
+)
+
 router.delete(
   "/deleteUser/:id",
   authController.protect,
