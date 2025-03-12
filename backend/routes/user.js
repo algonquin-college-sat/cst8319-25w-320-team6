@@ -36,6 +36,13 @@ router.post(
   userController.addUser
 )
 
+router.post(
+  "/sendReminder",
+  authController.protect,
+  authController.restrict("Administrator"),
+  userController.sendReminder
+)
+
 router.delete(
   "/deleteUser/:id",
   authController.protect,

@@ -164,21 +164,18 @@ const MemberManageTable = () => {
     }
   };
 
-  const sendReminder = async (userId) => {
+  const sendReminder = async (email) => {
     try {
-      setTimeout(() => {
-        alert("Reminder sent");
-      }, 1000);
-      return;
-      const response = await axios.post(
-        `${BaseURL}/api/user/sendReminder/${userId}`,
-        { userId },
+      await axios.post(
+        `${BaseURL}/api/user/sendReminder`,
+        { email },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         },
       );
+      alert("Reminder sent");
     } catch (error) {
       alert("Error sending reminder");
       console.error("Error sending reminder:", error);

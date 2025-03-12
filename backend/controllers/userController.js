@@ -3,6 +3,9 @@ const Role = require("../models/role");
 const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
+const sendgrid = require("@sendgrid/mail");
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Uncomment 'getUserDataFromEventBrite' to enable pulling data from live EventBrite API. 
 // Ensure that function 'saveAllUsersToDBFromMockFile' below has been commented out to prevent conflicts.  
@@ -204,7 +207,33 @@ exports.addUser = async (req, res) => {
   }
 };
 
-exports.sendReminder = async (req, res) => {};
+exports.sendReminder = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Please provide email.",
+    });
+  }
+  try {
+    await sendgrid.send({
+      to: email,
+      from: "admin@ottawatamilsangam.org",
+      subject: "Membership Renewal Reminder",
+      text: "Please renew your membership to continue enjoying our services.",
+    });
+    return res.status(200).json({
+      status: "success",
+      message: "Reminder sent successfully.",
+    });
+  } catch (error) {
+    console.error("Error sending reminder:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to send reminder.",
+    });
+  }
+};
 
 exports.updateUser = async (req, res) => {
   // check if request data contain password
