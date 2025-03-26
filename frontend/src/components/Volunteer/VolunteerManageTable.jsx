@@ -26,6 +26,7 @@ const VolunteerManageTable = () => {
         });
         const data = response.data;
 
+        console.log(data);
         const fetchedData = data.data.volunteers.map((volunteer) => ({
           id: volunteer._id,
           email: volunteer.email,
@@ -48,6 +49,7 @@ const VolunteerManageTable = () => {
           { accessorKey: "userId", header: "User ID" },
           { accessorKey: "created", header: "Created", size: 50 },
         ];
+        console.log(fetchedData);
         setColumns(columns);
         setVolunteerData(fetchedData);
       } catch (error) {

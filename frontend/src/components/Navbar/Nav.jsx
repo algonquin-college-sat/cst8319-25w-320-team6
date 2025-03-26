@@ -93,7 +93,14 @@ function Nav() {
         <div className="navbar-right">
           {user ? (
             <div className="user-info">
-              <h3>Welcome, {user.first_name}</h3>
+              <h3 className="user-info-greet">
+                Welcome, {user.first_name}
+                <ul className="user-info-menu">
+                  <li>Update My Information</li>
+                  <hr />
+                  <li onClick={() => localStorage.clear() || window.location.replace("/")}>Logout</li>
+                </ul>
+              </h3>
               <div className="social-login-container">
                 <div className="social-icons">
                   <a href="https://www.facebook.com/TamilSangamofOttawa" target="_blank" rel="noopener noreferrer">

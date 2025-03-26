@@ -70,6 +70,33 @@
   margin-right: 10px;
 }
 
+.user-info-greet {
+  position: relative;
+}
+
+.user-info-greet:hover .user-info-menu {
+  display: block;
+}
+
+.user-info-menu {
+  display: none;
+  background-color: white;
+  position: absolute;
+  padding: 2rem 0 0 0;
+  top: 0;
+  right: 0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.user-info-menu > li {
+  list-style: none;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+.user-info-menu > li:hover {
+  background-color: #f0f0f0;
+}
+
 .login-button,
 .logout-button {
   margin: 0px 5px 10px auto;
@@ -276,3 +303,4 @@
     display: block;
   }
 }
+
