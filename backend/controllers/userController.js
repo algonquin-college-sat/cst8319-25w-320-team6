@@ -299,6 +299,25 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+exports.updateMe = async (req, res) => {
+  const userId = req.user._id;
+  const { email, firstName, lastName } = req.body;
+
+  if (!email || !firstName || !lastName) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Please provide email, first name, and last name.",
+    });
+  }
+
+  await User.updateOne({ _id: new mongoose.Types.ObjectId(userId) }, { $set: { email, first_name: firstName, last_name: lastName } });
+
+  res.status(200).json({
+    status: "success",
+    message: "This route is not implemented yet.",
+  });
+}
+
 exports.deleteUser = async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(req.params.id, { isActive: false, $unset: { password: "" } });

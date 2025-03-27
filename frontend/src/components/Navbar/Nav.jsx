@@ -4,12 +4,16 @@ import "./Nav.css";
 import logo from "../../image/logo.jpg";
 import { FaFacebook, FaInstagram, FaBars } from "react-icons/fa";
 import { UserContext, ROLES } from "../../UserContext";
+import EditMyInfo from "../EditMyInfo/EditMyInfo";
+import axios from "axios";
+import BaseURL from "../../config";
 
 function Nav() {
   const navigate = useNavigate();
-  const { user, logout } = useContext(UserContext);
+  const { user, updateUser, logout } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [managementOpen, setManagementOpen] = useState(false);
+  const editMyInfoRef = React.useRef(null);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -19,8 +23,24 @@ function Nav() {
     setManagementOpen(!managementOpen);
   };
 
+  const onOpenEditUserInfo = async () => {
+    const result = await editMyInfoRef.current.edit();
+    console.log(result);
+    if (result) {
+      const { email, firstName, lastName } = result;
+      updateUser(firstName, lastName, email);
+      console.log("token", localStorage.getItem("token"));
+      axios.put(`${BaseURL}/api/user/updateMe`, { email, firstName, lastName }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+    }
+  };
+
   return (
     <>
+      <EditMyInfo ref={editMyInfoRef} />
       <div className="navbar">
         <div className="navbar-left">
           <img src={logo} alt="Logo" className="logo" />
@@ -96,7 +116,7 @@ function Nav() {
               <h3 className="user-info-greet">
                 Welcome, {user.first_name}
                 <ul className="user-info-menu">
-                  <li>Update My Information</li>
+                  <li onClick={() => onOpenEditUserInfo?.()}>Update My Information</li>
                   <hr />
                   <li onClick={() => localStorage.clear() || window.location.replace("/")}>Logout</li>
                 </ul>

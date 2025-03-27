@@ -52,7 +52,11 @@ export const UserProvider = ({ children }) => {
     navigate("/");
   };
 
-  return <UserContext.Provider value={{ user, login, logout }}>{children}</UserContext.Provider>;
+  const updateUser = (first_name, last_name, email) => {
+    setUser({ ...user, first_name, last_name, email });
+  }
+
+  return <UserContext.Provider value={{ user, updateUser, login, logout }}>{children}</UserContext.Provider>;
 };
 
 export const ROLES = {

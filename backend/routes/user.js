@@ -6,6 +6,8 @@ const router = express.Router();
 // To protect router, will use authController.protect as middleware
 router.get("/userinfo", authController.protect, userController.getUserInfo);
 
+router.put("/updateMe", authController.protect, userController.updateMe);
+
 // Admin-protected routes for User CRUD
 // To restrict router for the certain role, will use authController.restrict as middleware
 router.get(
