@@ -1,0 +1,51 @@
+.event-manage-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.event-manage-page h1 {
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.2rem;
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 8px;
+  margin: 2rem;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .event-manage-page {
+    padding: 1rem;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

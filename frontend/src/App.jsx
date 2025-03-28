@@ -13,6 +13,7 @@ import Gallery from "./pages/Gallery";
 import LoginForm from "./components/Login/LoginForm";
 import Register from "./components/Register/Register";
 import MemberManagePage from "./pages/MemberManagePage";
+import EventManagePage from "./pages/EventManagePage";
 import VolunteerManagePage from "./pages/VolunteerManagePage";
 import ResetPasswordPage from "./components/Login/ResetPasswordPage";
 import Footer from "./components/Footer/Footer";
@@ -40,6 +41,7 @@ function App() {
             <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
             <Route path="/member-manage" element={<MemberManagePage />} />
+            <Route path="/event-manage" element={<EventManagePage />} />
             <Route path="/volunteer-manage" element={<VolunteerManagePage />} />
             <Route path="/add-news" element={<AddPostForm />} />
             <Route path="/policy" element={<Policy />} />
