@@ -4,10 +4,31 @@
   margin: 0 auto;
 }
 
-.event-manage-page h1 {
-  color: #333;
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
-  text-align: center;
+}
+
+.page-header h1 {
+  color: #333;
+  margin: 0;
+}
+
+.create-event-button {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.create-event-button:hover {
+  background: #1565c0;
 }
 
 .events-grid {
@@ -42,6 +63,12 @@
 @media (max-width: 768px) {
   .event-manage-page {
     padding: 1rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
   }
 
   .events-grid {
