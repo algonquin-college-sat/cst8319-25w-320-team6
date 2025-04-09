@@ -8,10 +8,10 @@ from dateutil import parser
 # Config
 MONGO_HOST = 'localhost' # TODO: Fill in your MongoDB host
 DB_NAME = 'test'         # TODO: Fill in your MongoDB database name
-EVENTBRITE_TOKEN= ''     # TODO: Fill in your Eventbrite token
+EVENTBRITE_TOKEN= 'R533RH6U3UO2SWMQ7GWT'     # TODO: Fill in your Eventbrite token
 
 # Connect to MongoDB
-client = MongoClient(MONGO_HOST, 27017)
+client = MongoClient(MONGO_HOST, 27018)
 db = client[DB_NAME]
 coll = db['users']
 
