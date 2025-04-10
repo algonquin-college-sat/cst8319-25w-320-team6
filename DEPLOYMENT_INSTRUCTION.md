@@ -66,6 +66,10 @@ sudo chown -R caddy:caddy /var/www/site
 4. Update the Caddyfile to point to the frontend files
 ```Caddyfile
 ottawatamilsangam.org {
+        handle /api* {
+                reverse_proxy 127.0.0.1:3000
+        }
+
         handle /* {
                 root * /var/www/site
                 file_server
