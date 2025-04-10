@@ -119,9 +119,9 @@ services:
 ```
 2. Pull the docker image
 ```bash
-docker pull ottawatamilsangam/backend
+docker compose pull
 ```
 3. Start the docker containers
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
